@@ -7,7 +7,8 @@ WebPage:https://ieeexplore.ieee.org/abstract/document/9740153
 
 
 ## Figures
-![FigureOfPaper](docs/figure.png)
+<!-- ![FigureOfPaper](docs/figure.png) -->
+<img src="docs/figure.png">
 
 
 ## Structure
