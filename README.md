@@ -1,17 +1,20 @@
 # SkelCon
 PyTorch implementation for our paper on TMI2022:    
-Y. Tan, K. -F. Yang, S. -X. Zhao and Y. -J. Li, "Retinal Vessel Segmentation with Skeletal Prior and Contrastive Loss," in IEEE Transactions on Medical Imaging, doi: 10.1109/TMI.2022.3161681.
 
-WebPage:https://ieeexplore.ieee.org/abstract/document/9740153
+"Retinal Vessel Segmentation with Skeletal Prior and Contrastive Loss"
+
+## WebPages:
+- https://ieeexplore.ieee.org/abstract/document/9740153
+- https://www.life.uestc.edu.cn/info/1211/4485.htm
 
 
 
-## Figures
+## Method
 <!-- ![FigureOfPaper](docs/figure.png) -->
-<img src="docs/figure.png">
+<img src="docs/figures.png">
 
 
-## Structure
+## Project
 /code
 -   Data Augmentation Method:       code\color_space_mixture.py
 -   Sample Contrastive Learning:    code\sample_contrastive_learning.py
@@ -41,7 +44,7 @@ If you use this codes in your research, please cite the paper:
   author={Tan, Yubo and Yang, Kai-Fu and Zhao, Shi-Xuan and Li, Yong-Jie},
   journal={IEEE Transactions on Medical Imaging},
   year={2022},
-  doi={10.1109/TMI.2022.3161681}
+  doi={10.1109/TMI.2022.3161681},
   publisher={IEEE}
 }
 ```
