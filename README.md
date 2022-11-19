@@ -15,10 +15,15 @@ PyTorch implementation for our paper on TMI2022:
 
 
 ## Project
-/code
+/code:core code for contribution in our paper
 -   Data Augmentation Method:       code\color_space_mixture.py
 -   Sample Contrastive Learning:    code\sample_contrastive_learning.py
 -   Skeletal Prior based Network:   code\model_skelcon.py
+
+/proj
+-   Project for total experiment
+-   including:data process, network definition, training framework, and experiments code
+-   the main file is proj/main.py
 
 /onnx
 -   Pytorch trained weights from DRIVE, STARE, CHASE DB1, and HRF datasets.
@@ -43,8 +48,11 @@ If you use this codes in your research, please cite the paper:
   title={Retinal Vessel Segmentation with Skeletal Prior and Contrastive Loss},
   author={Tan, Yubo and Yang, Kai-Fu and Zhao, Shi-Xuan and Li, Yong-Jie},
   journal={IEEE Transactions on Medical Imaging},
-  year={2022},
   doi={10.1109/TMI.2022.3161681},
+  volume    = {41},
+  number    = {9},
+  pages     = {2238--2251},
+  year      = {2022},
   publisher={IEEE}
 }
 ```
