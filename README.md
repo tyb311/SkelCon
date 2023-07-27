@@ -15,30 +15,49 @@ PyTorch implementation for our paper on TMI2022:
 
 
 ## Project
-/code:core code for contribution in our paper
--   Data Augmentation Method:       code\color_space_mixture.py
--   Sample Contrastive Learning:    code\sample_contrastive_learning.py
--   Skeletal Prior based Network:   code\model_skelcon.py
 
-/proj
--   Project for total experiment
--   including:data process, network definition, training framework, and experiments code
--   the main file is proj/main.py
 
-/onnx
--   Pytorch trained weights from DRIVE, STARE, CHASE DB1, and HRF datasets.
--   The *.onnx weights can be directly used to extract vessels from fundus images, see onnx\infer.py
+```
+Project for SkelCon
+    ├── code:core code for contribution in our paper
+        ├── color_space_mixture.py (Data Augmentation Method)  
+        ├── sample_contrastive_learning.py (Sample Contrastive Learning)  
+        ├── model_skelcon.py (Skeletal Prior based Network)  
+        └── ...  
+    ├── docs (figures)  
+        └── ... 
+    ├── onnx (trained weights)  
+        ├── *.onnx (Pytorch trained weights)  
+        ├── infer.py (to extract vessels from fundus images with *.onnx) 
+        └── ...     
+    ├── proj (package for segmentation with torch)  
+        ├── data (to extract datasets)  
+        ├── nets (define the network)  
+        ├── build.py (define the network)  
+        ├── grad.py (for training)  
+        ├── loop.py (for training)  
+        ├── optim.py (optimizer)  
+        ├── main.py   
+        └── ...  
+    ├── results (segmentation for fundus images on testsets)  
+        ├── popular (segmentation results for popular datasets)  
+        ├── generalization (segmentation results for cross-dataset-validation)  
+        └── ...   
+```
 
-/results
--   segmentation results for popular datasets:              results\popular
--   segmentation results for cross-dataset-validation:      results\generalization
+
+And for the training on DRIVE dataset, run the command
+```bash
+cd proj
+python main.py --gpu=1 --db=drive
+```
 
 
 ## Contact
 For any questions, please contact me. 
 And my e-mails are 
 -   tyb311@qq.com
--   tyb@std.uestc.edu.cn
+-   ybt@std.uestc.edu.cn
 
 
 ## Citation

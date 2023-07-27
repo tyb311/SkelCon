@@ -386,7 +386,7 @@ class SeqNet(nn.Module):#Supervised contrastive learning segmentation network
 				return [self.pred, aux]
 		return self.pred
 
-def build_model(type_net='', type_seg='', type_loss='sim2', type_arch='', num_emb=128):
+def build_model(type_net='lunet', type_seg='lunet', type_loss='sim2', type_arch='', num_emb=128):
 	model = eval(type_net+'(num_emb=num_emb)')
 
 	model = SeqNet(type_net, type_seg, num_emb=num_emb)
