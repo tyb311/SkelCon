@@ -19,31 +19,7 @@ from torchvision.transforms import functional as f
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
-
-
-import sys
-sys.path.append('.')
-sys.path.append('..')
-
-from utils import *
-from nets import *
-from scls import *
-
-
-import configparser
-def read_config(ini_file):
-	''' Performs read config file and parses it.
-	:param ini_file: (String) the path of a .ini file.
-	:return config: (dict) the dictionary of information in ini_file.
-	'''
-	def _build_dict(items):
-		return {item[0]: eval(item[1]) for item in items}
-	# create configparser object
-	cf = configparser.ConfigParser()
-	# read .ini file
-	cf.read(ini_file)
-	config = {sec: _build_dict(cf.items(sec)) for sec in cf.sections()}
-	return config
+from nets import lunet, SIAM
 
 
 class MlpNorm(nn.Module):
@@ -142,54 +118,11 @@ class SeqNet(nn.Module):#Supervised contrastive learning segmentation network
 
 
 def build_model(type_net='lunet', type_seg='lunet', type_loss='sim2', type_arch='', num_emb=128):
-	model = eval(type_net+'(num_emb=num_emb)')
+	# model = eval(type_net+'(num_emb=num_emb)')
+	model = lunet(num_emb=num_emb)
 		# raise NotImplementedError(f'--> Unknown type_net: {type_net}')
 
 	if type_seg!='':
 		model = SeqNet(type_net, type_seg, num_emb=num_emb)
 		model = SIAM(encoder=model, clloss=type_loss, proj_num_length=num_emb)
 	return model
-
-
-#	把形态学模块放到前一层
-import time
-if __name__ == '__main__':
-	num_emb = 128
-	x = torch.rand(8,1,128,128)
-
-	# cfg = read_config('configs/siam_unet_unet.ini')
-	# print(cfg)
-	
-	net = build_model('lunet', 'lunet', '', '', num_emb)
-	# net.eval()
-
-	st = time.time()
-	ys = net(x)
-	print(net.__name__, 'Time:', time.time() - st)
-	for y in ys:
-		print(y.shape, y.min().item(), y.max().item())
-
-	# net.train()
-	for key, item in net.tmp.items():
-		print(key, item.shape)
-
-	sampler = MLPSampler(top=4, low=0, mode='half')
-	# net.train()
-	st = time.time()
-	l = net.regular(sampler, torch.rand_like(x), torch.rand_like(x))
-	# print('Regular:', l.item())
-	print(net.__name__, 'Time:', time.time() - st)
-	print('feat:', net.feat.shape, net.proj.shape)
-	plot4(emb=net.feat, path_save='emb.png')
-	plt.show()
-
-	
-	st = time.time()
-	l = net.constraint(aux=x, fun=nn.MSELoss())
-	print('constraint:', l.item())
-	print(net.__name__, 'Time:', time.time() - st)
-
-	# plot(net.emb)
-	print('Params model:',sum(p.numel() for p in net.parameters() if p.requires_grad))
-
-

@@ -63,13 +63,3 @@ def get_loss(mode='fr'):
 
 
 
-if __name__ == '__main__':
-    x = torch.rand(5, 1, 64, 64)
-    y = torch.rand(5, 1, 64, 64).round()
-
-    l = get_loss('fr')(x, y)
-    print(l.item())
-    l = get_loss('frp')(x, y)
-    print(l.item())
-    l = get_loss('frt')(x, y)
-    print(l.item())

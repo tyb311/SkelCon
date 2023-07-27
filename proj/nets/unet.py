@@ -18,13 +18,7 @@ from torchvision.transforms import functional as f
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
-
-import sys
-sys.path.append('.')
-sys.path.append('..')
-from utils import *
-from nets import *
-from scls import *
+from .conv import *
 
 class UpsampleBlock(torch.nn.Module):
 	def __init__(self, inp_c, out_c, up_mode='transp_conv'):
@@ -161,14 +155,7 @@ if __name__ == '__main__':
 
 	for y in ys:
 		print('pred:', y.shape)
-	# print(net.__name__, y['loss'])
 
-	# sampler = MLPSampler(top=4, low=0, mode='hard')
-	# net.train()
-	# l = net.regular(sampler, torch.rand(2,1,64,64), torch.rand(2,1,64,64), return_loss=False)
-	# print(net.__name__, l.item())
-
-	# plot(net.emb)
 	print('Params model:',sum(p.numel() for p in net.parameters() if p.requires_grad))
 
 	# net = nn.Conv2d(3, 8, 7, 1, 0)
