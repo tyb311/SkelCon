@@ -115,7 +115,7 @@ if __name__ == '__main__':
 	keras.gradUtil.coff_ds = args.coff_ds
 	if args.root=='':
 		keras.test(testset=dataset, key='los', flagSave=True)  
-		keras.val()
+		# keras.val() #you can rewrite thos function to save the best weight on training set
 		keras.fit(epochs=169)    
 
 	keras.test(testset=dataset, key='los', flagSave=True, tta=False)  
