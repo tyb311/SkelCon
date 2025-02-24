@@ -183,6 +183,19 @@ class KerasTorch(KerasBackend):
 			self.logTxt.append(logStr)
 			self.gradUtil.update_scheduler(i)
 
+			# 验证
+			if self.evalMetric and self.gradUtil.isLrLowest(thresh=1e-4):
+				# if i>1 and i%self.evalEpochs==0:
+				scores, lossItem = self.val()
+				logStr = '{:03}$ auc={:.4f} & iou={:.4f} & f1s={:.4f}'
+				logStr = logStr.format(i, scores['auc'],scores['iou'],scores['f1s'])
+				print('\r'+logStr)
+				self.logTxt.append(logStr)
+				self.callBackEarlyStopping(lossItem, i)
+				self.callBackModelCheckPoint(scores)
+			else:
+				self.callBackEarlyStopping(lossItem)#eye does not use this line
+				
 			# 早停
 			if self.stop_training==True:
 				print('Stop Training!!!')
@@ -279,3 +292,37 @@ class KerasTorch(KerasBackend):
 			fov = (fov>.5).astype(np.bool) 
 
 		print('Mean inference time:', timeSum/(i+1))
+
+	def val(self):
+		torch.set_grad_enabled(False)
+		self.model.eval()        
+		sum_auc = 0
+		sum_iou = 0
+		sum_f1s = 0
+
+		dataloader = self.dataset.valSet()
+		for i, imgs in enumerate(dataloader):
+			(img, lab, fov, aux) = self.dataset.parse(imgs) 
+			pred = self.predict(img)
+			true = lab.squeeze().numpy().astype(np.float32)
+			pred = pred.cpu().squeeze().numpy().astype(np.float32)
+
+			true = true.reshape(-1)
+			pred = pred.reshape(-1)
+			if fov is not None:
+				fov = fov.view(-1).numpy().astype(np.bool)  
+				true, pred = true[fov], pred[fov]
+				
+			true = np.round(true)
+			auc = metrics.roc_auc_score(true, pred)
+			sum_auc += auc
+
+			pred = np.round(np.clip(pred, 1e-6, 1-1e-6))
+			iou = metrics.jaccard_score(true, pred)
+			sum_iou += iou
+			f1s = metrics.f1_score(true, pred, average='binary')
+			sum_f1s += f1s
+			print('\r{:03}$ auc={:.4f} & iou={:.4f} & f1s={:.4f} & a={:.4f}'.format(i, auc, iou, f1s, a), end='')
+		num = len(dataloader)#i+1#
+		scores = {'auc':sum_auc/num, 'iou':sum_iou/num, 'f1s':sum_f1s/num}
+		return scores, los
